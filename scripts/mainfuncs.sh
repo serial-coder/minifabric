@@ -19,7 +19,7 @@ OPNAMES=([up]="$LINE0$LINE1" [netup]='imageget,certgen,netup,netstats' \
   [query]='ccquery' [join]='channeljoin' [blockquery]='blockquery' \
   [channelquery]='channelquery' [profilegen]='profilegen' \
   [channelsign]='channelsign' [channelupdate]='channelupdate' \
-  [anchorupdate]='anchorupdate' [dashup]='dashup' [dashdown]='dashdown' \
+  [anchorupdate]='anchorupdate' [explorerup]='explorerup' [explorerdown]='explorerdown' \
   [nodeimport]='nodeimport' [discover]='discover' [imageget]='imageget')
 
 # Print the usage message
@@ -52,6 +52,8 @@ function printHelp() {
   echo "      - 'discover' - disocver channel endorsement policy"
   echo "      - 'cleanup'  - remove all the nodes and cleanup runtime files"
   echo "      - 'stats'  - list all nodes and status"
+  echo "      - 'explorerup'  - start up Hyperledger explorer"
+  echo "      - 'explorerdown'  - shutdown Hyperledger explorer"
   echo ""
   echo "    options:"
   echo "    -c|--channel-name         - channel name to use (defaults to \"mychannel\")"
@@ -68,6 +70,7 @@ function printHelp() {
   echo "    -o|--organization         - organization to be used for org specific operations"
   echo "    -y|--chaincode-policy     - chaincode policy"
   echo "    -d|--init-required        - chaincode initialization flag, default is true"
+  echo "    -f|--run-output           - minifabric run time output callback, can be 'minifab'(default), 'default', 'dense'"
   echo "    -h|--help                 - print this message"
   echo
 }
@@ -75,7 +78,7 @@ function printHelp() {
 function doDefaults() {
   declare -a params=("CHANNEL_NAME" "CC_LANGUAGE" "IMAGETAG" "BLOCK_NUMBER" "CC_VERSION" \
     "CC_NAME" "DB_TYPE" "CC_PARAMETERS" "EXPOSE_ENDPOINTS" "CURRENT_ORG" "TRANSIENT_DATA" \
-    "CC_PRIVATE" "CC_POLICY" "CC_INIT_REQUIRED")
+    "CC_PRIVATE" "CC_POLICY" "CC_INIT_REQUIRED" "RUN_OUTPUT")
   if [ ! -f "./vars/envsettings" ]; then
     cp envsettings vars/envsettings
   fi
@@ -126,6 +129,12 @@ function isValidateCMD() {
   fi
 }
 
+function getRealRootDir() {
+  varpath=$(docker inspect --format '{{ range .Mounts }}{{ if eq .Destination "/home/vars" }}{{ .Source }}{{ end }}{{ end }}' minifab)
+  hostroot=${varpath%/vars}
+}
+
 function startMinifab() {
+  export ANSIBLE_STDOUT_CALLBACK=$RUN_OUTPUT
   time doOp $funcparams
 }
