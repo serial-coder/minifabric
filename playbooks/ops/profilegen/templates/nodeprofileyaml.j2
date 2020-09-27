@@ -1,7 +1,7 @@
 ---
 "name": "fabric-network"
 "x-type": "hlfv1"
-"version": "1.1.0"
+"version": "1.0.0"
 "channels":
   "{{ CHANNEL_NAME }}":
     "orderers":
@@ -59,7 +59,7 @@
   "{{ ca.fullname }}":
     "url": "https://{{ ca.url }}:{{ ca.port }}"
     "tlsCACerts":
-      "path": "/keyfiles/{{ orgattrs[ca.org].certpath }}/{{ ca.org }}/ca/{{ ca.fullname }}-cert.pem"
+      "pem": "{{ lookup('file', pjroot+'/vars/keyfiles/'+orgattrs[ca.org].certpath+'/'+ca.org+'/ca/'+ca.fullname+'-cert.pem')|regex_replace('(\n)', '\\\\n') }}"
     "httpOptions":
       "verify": "false"
     "caName": "{{ ca.name }}"

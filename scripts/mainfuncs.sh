@@ -12,15 +12,15 @@ LINE0='imageget,certgen,netup,netstats,channelcreate,channeljoin,anchorupdate,'
 LINE1='profilegen,ccinstall,ccapprove,cccommit,ccinstantiate,discover'
 OPNAMES=([up]="$LINE0$LINE1" [netup]='imageget,certgen,netup,netstats' \
   [restart]='netdown,netup' [generate]='certrem,certgen' \
-  [cleanup]='netdown,filerem' [stats]='netstats' \
+  [cleanup]='netdown,filerem' [stats]='netstats' [apprun]='apprun' \
   [down]='netdown' [install]='ccinstall' [approve]='ccapprove' \
   [instantiate]='ccinstantiate' [initialize]='ccinstantiate' \
   [commit]='cccommit' [invoke]='ccinvoke' [create]='channelcreate' \
   [query]='ccquery' [join]='channeljoin' [blockquery]='blockquery' \
-  [channelquery]='channelquery' [profilegen]='profilegen' \
+  [channelquery]='channelquery' [profilegen]='profilegen' [caliperrun]='caliperrun' \
   [channelsign]='channelsign' [channelupdate]='channelupdate' \
   [anchorupdate]='anchorupdate' [explorerup]='explorerup' [explorerdown]='explorerdown' \
-  [nodeimport]='nodeimport' [discover]='discover' [imageget]='imageget')
+  [nodeimport]='nodeimport' [discover]='discover' [imageget]='imageget' [update]='update')
 
 # Print the usage message
 function printHelp() {
@@ -49,11 +49,14 @@ function printHelp() {
   echo "      - 'channelupdate'  - do channel update with a given new channel configuration json file" 
   echo "      - 'anchorupdate'  - do channel update which makes all peer nodes anchors for the all orgs"
   echo "      - 'nodeimport' - import external node certs and endpoints"
-  echo "      - 'discover' - disocver channel endorsement policy"
+  echo "      - 'discover' - discover channel endorsement policy"
   echo "      - 'cleanup'  - remove all the nodes and cleanup runtime files"
   echo "      - 'stats'  - list all nodes and status"
   echo "      - 'explorerup'  - start up Hyperledger explorer"
   echo "      - 'explorerdown'  - shutdown Hyperledger explorer"
+  echo "      - 'apprun'  - (experimental) run chaincode app if there is any"
+  echo "      - 'caliperrun'  - (experimental) run caliper test"
+  echo "      - 'update'  - (experimental) update minifabric to the latest version"
   echo ""
   echo "    options:"
   echo "    -c|--channel-name         - channel name to use (defaults to \"mychannel\")"
